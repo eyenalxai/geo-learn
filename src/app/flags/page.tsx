@@ -41,14 +41,17 @@ export default function Page() {
 
 	return (
 		<div
-			className={cn("flex", "flex-col", "items-center", "space-y-12", "mt-12")}
+			className={cn("flex", "flex-col", "items-center", "space-y-12", [
+				"mt-64",
+				"md:mt-12"
+			])}
 		>
 			<div
 				className={cn(
 					"z-20",
 					"relative",
-					["w-[100px]", "sm:w-[200px]"],
-					["h-[75px]", "sm:h-[150px]"],
+					["w-[100px]", "md:w-[200px]"],
+					["h-[75px]", "md:h-[150px]"],
 					loadingImage && "grayscale",
 					"transition-[filter]"
 				)}
