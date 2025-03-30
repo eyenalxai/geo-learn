@@ -9,9 +9,9 @@ import { useEffect, useState } from "react"
 
 export default function Page() {
 	const queryClient = useQueryClient()
-
 	const [selectedCode, setSelectedCode] = useState<string | null>(null)
 	const [loadingImage, setLoadingImage] = useState(false)
+	const [previousRoundCodes, setPreviousRoundCodes] = useState<string[]>([])
 
 	const {
 		data: countries,
@@ -19,7 +19,7 @@ export default function Page() {
 		isError
 	} = useQuery({
 		queryKey: ["countries"],
-		queryFn: getRandomCountries
+		queryFn: () => getRandomCountries(previousRoundCodes)
 	})
 
 	useEffect(() => {
@@ -33,6 +33,14 @@ export default function Page() {
 			return () => clearTimeout(timer)
 		}
 	}, [selectedCode, queryClient])
+
+	useEffect(() => {
+		if (countries) {
+			// Store all country codes from current round
+			const currentRoundCodes = countries.map((country) => country.code)
+			setPreviousRoundCodes(currentRoundCodes)
+		}
+	}, [countries])
 
 	if (isPending || isError) return null
 
