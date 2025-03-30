@@ -54,6 +54,7 @@ export default function Page() {
 					className={cn("object-contain")}
 					src={`/flags/${correctCountry.code.toLowerCase()}.webp`}
 					alt={"flag"}
+					quality={50}
 					width={192}
 					height={192}
 				/>
