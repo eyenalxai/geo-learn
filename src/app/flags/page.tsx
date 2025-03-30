@@ -11,6 +11,7 @@ export default function Page() {
 	const queryClient = useQueryClient()
 
 	const [selectedCode, setSelectedCode] = useState<string | null>(null)
+	const [loadingImage, setLoadingImage] = useState(false)
 
 	const {
 		data: countries,
@@ -24,6 +25,7 @@ export default function Page() {
 	useEffect(() => {
 		if (selectedCode) {
 			const timer = setTimeout(() => {
+				setLoadingImage(true)
 				setSelectedCode(null)
 				queryClient.invalidateQueries({ queryKey: ["countries"] })
 			}, 750)
@@ -40,7 +42,17 @@ export default function Page() {
 
 	return (
 		<div className={cn("flex", "flex-col", "items-center", "space-y-4")}>
-			<div className={cn("z-20", "relative", "h-48", "w-48", "my-auto")}>
+			<div
+				className={cn(
+					"z-20",
+					"relative",
+					"h-48",
+					"w-48",
+					"my-auto",
+					loadingImage && "grayscale",
+					"transition-[filter]"
+				)}
+			>
 				<Image
 					className={cn(
 						"object-contain",
@@ -52,6 +64,7 @@ export default function Page() {
 					alt={"flag"}
 					height={192}
 					width={192}
+					onLoad={() => setLoadingImage(false)}
 				/>
 			</div>
 			<div
