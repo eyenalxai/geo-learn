@@ -48,7 +48,6 @@ export default function Page() {
 					"relative",
 					"h-48",
 					"w-48",
-					"my-auto",
 					loadingImage && "grayscale",
 					"transition-[filter]"
 				)}
