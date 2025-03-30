@@ -4,20 +4,20 @@ const cleanCountryName = (name: string) => {
 	return name.replace(/\s*\([^)]*\)/g, "").trim()
 }
 
-export const getRandomCountries = (excludeCodes: string[]) => {
+const shuffleArray = <T>(array: T[]): T[] => {
+	const result = [...array]
+	for (let i = result.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1))
+		;[result[i], result[j]] = [result[j], result[i]]
+	}
+	return result
+}
+
+export const getRandomCountries = () => {
 	const count = 5
 	const countryEntries = Object.entries(countries)
 
-	// Filter out all excluded country codes
-	const filteredEntries = countryEntries.filter(
-		([code]) => !excludeCodes.includes(code)
-	)
-
-	// If we don't have enough countries left, reset the exclusion list
-	const availableEntries =
-		filteredEntries.length >= count ? filteredEntries : countryEntries
-
-	const shuffled = [...availableEntries].sort(() => 0.5 - Math.random())
+	const shuffled = shuffleArray(countryEntries)
 	const selected = shuffled.slice(0, count)
 
 	const result = selected.map(([code, name]) => ({
