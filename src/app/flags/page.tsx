@@ -44,6 +44,7 @@ export default function Page() {
 		<div className={cn("flex", "flex-col", "items-center", "space-y-4")}>
 			<div
 				className={cn(
+					"z-20",
 					"relative",
 					"h-48",
 					"w-48",
@@ -61,6 +62,7 @@ export default function Page() {
 			</div>
 			<div
 				className={cn(
+					"z-10",
 					"flex",
 					"flex-row",
 					"flex-wrap",
