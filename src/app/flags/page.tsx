@@ -11,7 +11,6 @@ export default function Page() {
 	const queryClient = useQueryClient()
 
 	const [selectedCode, setSelectedCode] = useState<string | null>(null)
-	const [loadingImage, setLoadingImage] = useState(true)
 
 	const {
 		data: countries,
@@ -25,7 +24,6 @@ export default function Page() {
 	useEffect(() => {
 		if (selectedCode) {
 			const timer = setTimeout(() => {
-				setLoadingImage(true)
 				setSelectedCode(null)
 				queryClient.invalidateQueries({ queryKey: ["countries"] })
 			}, 750)
@@ -48,16 +46,16 @@ export default function Page() {
 					"relative",
 					"h-48",
 					"w-48",
-					loadingImage && ["blur-2xl"],
-					"transition-[filter]"
+					"flex",
+					"justify-center"
 				)}
 			>
 				<Image
 					className={cn("object-contain")}
 					src={`/flags/${correctCountry.code.toLowerCase()}.webp`}
 					alt={"flag"}
-					fill
-					onLoadingComplete={() => setLoadingImage(false)}
+					width={192}
+					height={192}
 				/>
 			</div>
 			<div
