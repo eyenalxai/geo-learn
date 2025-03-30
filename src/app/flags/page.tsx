@@ -5,9 +5,12 @@ import { getRandomCountries } from "@/lib/random-country"
 import { cn } from "@/lib/utils"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import Image from "next/image"
+import { useState } from "react"
 
 export default function Page() {
 	const queryClient = useQueryClient()
+
+	const [selectedCode, setSelectedCode] = useState<string | null>(null)
 
 	const {
 		data: countries,
@@ -25,8 +28,8 @@ export default function Page() {
 	) as ReturnType<typeof getRandomCountries>[0]
 
 	return (
-		<div>
-			<div className={cn("relative", "h-24", "w-12")}>
+		<div className={cn("flex", "flex-col", "items-center")}>
+			<div className={cn("relative", "h-48", "w-48")}>
 				<Image
 					className={cn("object-contain")}
 					src={`/flags/${correctCountry.code.toLowerCase()}.webp`}
@@ -34,15 +37,35 @@ export default function Page() {
 					fill
 				/>
 			</div>
-			<Button
-				onClick={() =>
-					queryClient.invalidateQueries({
-						queryKey: ["countries"]
-					})
-				}
+			<div
+				className={cn(
+					"flex",
+					"flex-row",
+					"flex-wrap",
+					"gap-4",
+					"justify-center"
+				)}
 			>
-				New
-			</Button>
+				{countries.map((country) => (
+					<Button
+						key={country.code}
+						variant={"outline"}
+						disabled={selectedCode !== null && selectedCode !== country.code}
+						className={cn(
+							"cursor-pointer",
+							selectedCode === country.code &&
+								(country.isCorrect
+									? ["border-emerald-500", "dark:border-emerald-500"]
+									: ["border-rose-500", "dark:border-rose-500"])
+						)}
+						onClick={() => {
+							setSelectedCode(country.code)
+						}}
+					>
+						{country.name}
+					</Button>
+				))}
+			</div>
 		</div>
 	)
 }
