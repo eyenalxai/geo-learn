@@ -5,7 +5,7 @@ import { getRandomCountries } from "@/lib/random-country"
 import { cn } from "@/lib/utils"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function Page() {
 	const queryClient = useQueryClient()
@@ -20,6 +20,17 @@ export default function Page() {
 		queryKey: ["countries"],
 		queryFn: getRandomCountries
 	})
+
+	useEffect(() => {
+		if (selectedCode) {
+			const timer = setTimeout(() => {
+				setSelectedCode(null)
+				queryClient.invalidateQueries({ queryKey: ["countries"] })
+			}, 750)
+
+			return () => clearTimeout(timer)
+		}
+	}, [selectedCode, queryClient])
 
 	if (isPending || isError) return null
 
@@ -50,19 +61,28 @@ export default function Page() {
 					<Button
 						key={country.code}
 						variant={"outline"}
-						disabled={selectedCode !== null && selectedCode !== country.code}
+						disabled={
+							selectedCode !== null &&
+							selectedCode !== country.code &&
+							!country.isCorrect
+						}
 						className={cn(
 							"cursor-pointer",
 							selectedCode === country.code &&
 								(country.isCorrect
 									? ["border-emerald-500", "dark:border-emerald-500"]
-									: ["border-rose-500", "dark:border-rose-500"])
+									: ["border-rose-500", "dark:border-rose-500"]),
+							selectedCode !== null &&
+								country.isCorrect && [
+									"border-emerald-500",
+									"dark:border-emerald-500"
+								]
 						)}
 						onClick={() => {
 							setSelectedCode(country.code)
 						}}
 					>
-						{country.name}
+						{country.name.replace("(the)", "").trim()}
 					</Button>
 				))}
 			</div>
