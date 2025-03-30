@@ -23,10 +23,9 @@ export default function Page() {
 	})
 
 	useEffect(() => {
-		setLoadingImage(true)
-
 		if (selectedCode) {
 			const timer = setTimeout(() => {
+				setLoadingImage(true)
 				setSelectedCode(null)
 				queryClient.invalidateQueries({ queryKey: ["countries"] })
 			}, 750)
