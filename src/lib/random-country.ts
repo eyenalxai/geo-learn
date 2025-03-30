@@ -1,5 +1,8 @@
 import { countries } from "@/lib/countries"
 
+const cleanCountryName = (name: string) => {
+	return name.replace(/\s*\([^)]*\)/g, "").trim()
+}
 export const getRandomCountries = () => {
 	const count = 5
 
@@ -17,5 +20,8 @@ export const getRandomCountries = () => {
 	const correctIndex = Math.floor(Math.random() * count)
 	result[correctIndex].isCorrect = true
 
-	return result
+	return result.map((country) => ({
+		...country,
+		name: cleanCountryName(country.name)
+	}))
 }
