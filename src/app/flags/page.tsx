@@ -41,28 +41,24 @@ export default function Page() {
 	) as ReturnType<typeof getRandomCountries>[0]
 
 	return (
-		<div className={cn("flex", "flex-col", "items-center", "space-y-4")}>
+		<div
+			className={cn("flex", "flex-col", "items-center", "space-y-12", "mt-12")}
+		>
 			<div
 				className={cn(
 					"z-20",
 					"relative",
-					"h-48",
-					"w-48",
+					["w-[100px]", "sm:w-[200px]"],
+					["h-[75px]", "sm:h-[150px]"],
 					loadingImage && "grayscale",
 					"transition-[filter]"
 				)}
 			>
 				<Image
-					className={cn(
-						"object-contain",
-						"rounded",
-						"border",
-						"border-primary"
-					)}
+					className={cn("object-contain")}
 					src={`/flags/${correctCountry.code.toLowerCase()}.webp`}
 					alt={"flag"}
-					height={192}
-					width={192}
+					fill
 					onLoad={() => setLoadingImage(false)}
 				/>
 			</div>
