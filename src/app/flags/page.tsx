@@ -11,7 +11,6 @@ export default function Page() {
 	const queryClient = useQueryClient()
 	const [selectedCode, setSelectedCode] = useState<string | null>(null)
 	const [loadingImage, setLoadingImage] = useState(false)
-	const [roundHistory, setRoundHistory] = useState<string[][]>([])
 
 	const {
 		data: countries,
@@ -19,13 +18,8 @@ export default function Page() {
 		isError
 	} = useQuery({
 		queryKey: ["countries"],
-		queryFn: () => getRandomCountries(getLastThreeRoundsCodes())
+		queryFn: () => getRandomCountries()
 	})
-
-	// Get all country codes from the last 3 rounds
-	const getLastThreeRoundsCodes = () => {
-		return roundHistory.slice(-3).flat()
-	}
 
 	useEffect(() => {
 		if (selectedCode) {
@@ -38,14 +32,6 @@ export default function Page() {
 			return () => clearTimeout(timer)
 		}
 	}, [selectedCode, queryClient])
-
-	useEffect(() => {
-		if (countries) {
-			// Store current round's country codes in history
-			const currentRoundCodes = countries.map((country) => country.code)
-			setRoundHistory((prev) => [...prev, currentRoundCodes].slice(-3)) // Keep only last 3 rounds
-		}
-	}, [countries])
 
 	if (isPending || isError) return null
 
