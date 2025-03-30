@@ -41,14 +41,10 @@ export default function Page() {
 
 	return (
 		<div
-			className={cn(
-				"h-[70vh]",
-				"flex",
-				"flex-col",
-				"items-center",
-				"justify-center",
-				"space-y-12"
-			)}
+			className={cn("flex", "flex-col", "items-center", "space-y-12", [
+				"mt-64",
+				"md:mt-12"
+			])}
 		>
 			<div
 				className={cn(
