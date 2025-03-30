@@ -41,7 +41,7 @@ export default function Page() {
 	) as ReturnType<typeof getRandomCountries>[0]
 
 	return (
-		<div className={cn("flex", "flex-col", "items-center")}>
+		<div className={cn("flex", "flex-col", "items-center", "space-y-4")}>
 			<div
 				className={cn(
 					"relative",
